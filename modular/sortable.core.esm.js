@@ -1752,8 +1752,9 @@ Sortable.prototype =
       css(ghostEl, 'top', rect.top);
       css(ghostEl, 'left', rect.left);
       css(ghostEl, 'width', rect.width);
-      css(ghostEl, 'height', rect.height);
-      css(ghostEl, 'opacity', '0.8');
+      css(ghostEl, 'height', rect.height); // css(ghostEl, 'opacity', '0.8');
+
+      console.info('test: blocking opacity');
       css(ghostEl, 'position', PositionGhostAbsolutely ? 'absolute' : 'fixed');
       css(ghostEl, 'zIndex', '100000');
       css(ghostEl, 'pointerEvents', 'none');

@@ -38,7 +38,7 @@ import {
 } from './utils.js';
 
 
-let pluginEvent = function(eventName, sortable, { evt: originalEvent, ...data } = {}) {
+let pluginEvent = function (eventName, sortable, { evt: originalEvent, ...data } = {}) {
 	PluginManager.pluginEvent.bind(Sortable)(eventName, sortable, {
 		dragEl,
 		parentEl,
@@ -137,8 +137,8 @@ let dragEl,
 	_silent = false,
 	savedInputChecked = [];
 
-	/** @const */
-	const documentExists = typeof document !== 'undefined',
+/** @const */
+const documentExists = typeof document !== 'undefined',
 
 	PositionGhostAbsolutely = IOS,
 
@@ -147,7 +147,7 @@ let dragEl,
 	// This will not pass for IE9, because IE9 DnD only works on anchors
 	supportDraggable = documentExists && !ChromeForAndroid && !IOS && ('draggable' in document.createElement('div')),
 
-	supportCssPointerEvents = (function() {
+	supportCssPointerEvents = (function () {
 		if (!documentExists) return;
 		// false when <= IE11
 		if (IE11OrLess) {
@@ -158,7 +158,7 @@ let dragEl,
 		return el.style.pointerEvents === 'auto';
 	})(),
 
-	_detectDirection = function(el, options) {
+	_detectDirection = function (el, options) {
 		let elCSS = css(el),
 			elWidth = parseInt(elCSS.width)
 				- parseInt(elCSS.paddingLeft)
@@ -174,7 +174,7 @@ let dragEl,
 
 		if (elCSS.display === 'flex') {
 			return elCSS.flexDirection === 'column' || elCSS.flexDirection === 'column-reverse'
-			? 'vertical' : 'horizontal';
+				? 'vertical' : 'horizontal';
 		}
 
 		if (elCSS.display === 'grid') {
@@ -204,7 +204,7 @@ let dragEl,
 		);
 	},
 
-	_dragElInRowColumn = function(dragRect, targetRect, vertical) {
+	_dragElInRowColumn = function (dragRect, targetRect, vertical) {
 		let dragElS1Opp = vertical ? dragRect.left : dragRect.top,
 			dragElS2Opp = vertical ? dragRect.right : dragRect.bottom,
 			dragElOppLength = vertical ? dragRect.width : dragRect.height,
@@ -225,7 +225,7 @@ let dragEl,
 	 * @param  {Number} y      Y position
 	 * @return {HTMLElement}   Element of the first found nearest Sortable
 	 */
-	_detectNearestEmptySortable = function(x, y) {
+	_detectNearestEmptySortable = function (x, y) {
 		let ret;
 		sortables.some((sortable) => {
 			const threshold = sortable[expando].options.emptyInsertThreshold;
@@ -244,10 +244,10 @@ let dragEl,
 
 	_prepareGroup = function (options) {
 		function toFn(value, pull) {
-			return function(to, from, dragEl, evt) {
+			return function (to, from, dragEl, evt) {
 				let sameGroup = to.options.group.name &&
-								from.options.group.name &&
-								to.options.group.name === from.options.group.name;
+					from.options.group.name &&
+					to.options.group.name === from.options.group.name;
 
 				if (value == null && (pull || sameGroup)) {
 					// Default pull value
@@ -263,8 +263,8 @@ let dragEl,
 					let otherGroup = (pull ? to : from).options.group.name;
 
 					return (value === true ||
-					(typeof value === 'string' && value === otherGroup) ||
-					(value.join && value.indexOf(otherGroup) > -1));
+						(typeof value === 'string' && value === otherGroup) ||
+						(value.join && value.indexOf(otherGroup) > -1));
 				}
 			};
 		}
@@ -273,7 +273,7 @@ let dragEl,
 		let originalGroup = options.group;
 
 		if (!originalGroup || typeof originalGroup != 'object') {
-			originalGroup = {name: originalGroup};
+			originalGroup = { name: originalGroup };
 		}
 
 		group.name = originalGroup.name;
@@ -284,13 +284,13 @@ let dragEl,
 		options.group = group;
 	},
 
-	_hideGhostForTarget = function() {
+	_hideGhostForTarget = function () {
 		if (!supportCssPointerEvents && ghostEl) {
 			css(ghostEl, 'display', 'none');
 		}
 	},
 
-	_unhideGhostForTarget = function() {
+	_unhideGhostForTarget = function () {
 		if (!supportCssPointerEvents && ghostEl) {
 			css(ghostEl, 'display', '');
 		}
@@ -299,7 +299,7 @@ let dragEl,
 
 // #1184 fix - Prevent click event on fallback if dragged but item not changed position
 if (documentExists && !ChromeForAndroid) {
-	document.addEventListener('click', function(evt) {
+	document.addEventListener('click', function (evt) {
 		if (ignoreNextClick) {
 			evt.preventDefault();
 			evt.stopPropagation && evt.stopPropagation();
@@ -310,7 +310,7 @@ if (documentExists && !ChromeForAndroid) {
 	}, true);
 }
 
-let nearestEmptyInsertDetectEvent = function(evt) {
+let nearestEmptyInsertDetectEvent = function (evt) {
 	if (dragEl) {
 		evt = evt.touches ? evt.touches[0] : evt;
 		let nearest = _detectNearestEmptySortable(evt.clientX, evt.clientY);
@@ -332,7 +332,7 @@ let nearestEmptyInsertDetectEvent = function(evt) {
 };
 
 
-let _checkOutsideTargetEl = function(evt) {
+let _checkOutsideTargetEl = function (evt) {
 	if (dragEl) {
 		dragEl.parentNode[expando]._isOutsideThisEl(evt.target);
 	}
@@ -346,7 +346,7 @@ let _checkOutsideTargetEl = function(evt) {
  */
 function Sortable(el, options) {
 	if (!(el && el.nodeType && el.nodeType === 1)) {
-		throw `Sortable: \`el\` must be an HTMLElement, not ${ {}.toString.call(el) }`;
+		throw `Sortable: \`el\` must be an HTMLElement, not ${{}.toString.call(el)}`;
 	}
 
 	this.el = el; // root element
@@ -367,7 +367,7 @@ function Sortable(el, options) {
 		invertSwap: false, // invert always
 		invertedSwapThreshold: null, // will be set to same as swapThreshold if default
 		removeCloneOnHide: true,
-		direction: function() {
+		direction: function () {
 			return _detectDirection(el, this.options);
 		},
 		ghostClass: 'sortable-ghost',
@@ -391,7 +391,7 @@ function Sortable(el, options) {
 		fallbackClass: 'sortable-fallback',
 		fallbackOnBody: false,
 		fallbackTolerance: 0,
-		fallbackOffset: {x: 0, y: 0},
+		fallbackOffset: { x: 0, y: 0 },
 		supportPointer: Sortable.supportPointer !== false && ('PointerEvent' in window) && !Safari,
 		emptyInsertThreshold: 5
 	};
@@ -445,13 +445,13 @@ function Sortable(el, options) {
 Sortable.prototype = /** @lends Sortable.prototype */ {
 	constructor: Sortable,
 
-	_isOutsideThisEl: function(target) {
+	_isOutsideThisEl: function (target) {
 		if (!this.el.contains(target) && target !== this.el) {
 			lastTarget = null;
 		}
 	},
 
-	_getDirection: function(evt, target) {
+	_getDirection: function (evt, target) {
 		return (typeof this.options.direction === 'function') ? this.options.direction.call(this, evt, target, dragEl) : this.options.direction;
 	},
 
@@ -660,7 +660,7 @@ Sortable.prototype = /** @lends Sortable.prototype */ {
 	_delayedDragTouchMoveHandler: function (/** TouchEvent|PointerEvent **/e) {
 		let touch = e.touches ? e.touches[0] : e;
 		if (Math.max(Math.abs(touch.clientX - this._lastX), Math.abs(touch.clientY - this._lastY))
-				>= Math.floor(this.options.touchStartThreshold / (this.nativeDraggable && window.devicePixelRatio || 1))
+			>= Math.floor(this.options.touchStartThreshold / (this.nativeDraggable && window.devicePixelRatio || 1))
 		) {
 			this._disableDelayedDrag();
 		}
@@ -790,7 +790,7 @@ Sortable.prototype = /** @lends Sortable.prototype */ {
 
 	_onTouchMove: function (/**TouchEvent*/evt) {
 		if (tapEvt) {
-			let	options = this.options,
+			let options = this.options,
 				fallbackTolerance = options.fallbackTolerance,
 				fallbackOffset = options.fallbackOffset,
 				touch = evt.touches ? evt.touches[0] : evt,
@@ -799,11 +799,11 @@ Sortable.prototype = /** @lends Sortable.prototype */ {
 				scaleY = ghostEl && ghostMatrix && ghostMatrix.d,
 				relativeScrollOffset = PositionGhostAbsolutely && ghostRelativeParent && getRelativeScrollOffset(ghostRelativeParent),
 				dx = ((touch.clientX - tapEvt.clientX)
-						+ fallbackOffset.x) / (scaleX || 1)
-						+ (relativeScrollOffset ? (relativeScrollOffset[0] - ghostRelativeParentInitialScroll[0]) : 0) / (scaleX || 1),
+					+ fallbackOffset.x) / (scaleX || 1)
+					+ (relativeScrollOffset ? (relativeScrollOffset[0] - ghostRelativeParentInitialScroll[0]) : 0) / (scaleX || 1),
 				dy = ((touch.clientY - tapEvt.clientY)
-						+ fallbackOffset.y) / (scaleY || 1)
-						+ (relativeScrollOffset ? (relativeScrollOffset[1] - ghostRelativeParentInitialScroll[1]) : 0) / (scaleY || 1);
+					+ fallbackOffset.y) / (scaleY || 1)
+					+ (relativeScrollOffset ? (relativeScrollOffset[1] - ghostRelativeParentInitialScroll[1]) : 0) / (scaleY || 1);
 
 			// only set the status to dragging, when we are actually dragging
 			if (!Sortable.active && !awaitingDragStarted) {
@@ -896,6 +896,7 @@ Sortable.prototype = /** @lends Sortable.prototype */ {
 			css(ghostEl, 'width', rect.width);
 			css(ghostEl, 'height', rect.height);
 			// css(ghostEl, 'opacity', '0.8');
+			console.info('test: blocking opacity')
 			css(ghostEl, 'position', (PositionGhostAbsolutely ? 'absolute' : 'fixed'));
 			css(ghostEl, 'zIndex', '100000');
 			css(ghostEl, 'pointerEvents', 'none');
@@ -936,7 +937,7 @@ Sortable.prototype = /** @lends Sortable.prototype */ {
 
 
 		// #1143: IFrame support workaround
-		_this.cloneId = _nextTick(function() {
+		_this.cloneId = _nextTick(function () {
 			pluginEvent('clone', _this);
 			if (Sortable.eventCanceled) return;
 
@@ -1065,7 +1066,7 @@ Sortable.prototype = /** @lends Sortable.prototype */ {
 				if (fromSortable === _this) {
 					_this._ignoreWhileAnimating = target;
 				}
-				_this.animateAll(function() {
+				_this.animateAll(function () {
 					dragOverEvent('dragOverAnimationComplete');
 					_this._ignoreWhileAnimating = null;
 				});
@@ -1316,7 +1317,7 @@ Sortable.prototype = /** @lends Sortable.prototype */ {
 
 	_ignoreWhileAnimating: null,
 
-	_offMoveEvents: function() {
+	_offMoveEvents: function () {
 		off(document, 'mousemove', this._onTouchMove);
 		off(document, 'touchmove', this._onTouchMove);
 		off(document, 'pointermove', this._onTouchMove);
@@ -1505,44 +1506,44 @@ Sortable.prototype = /** @lends Sortable.prototype */ {
 		this._nulling();
 	},
 
-	_nulling: function() {
+	_nulling: function () {
 		pluginEvent('nulling', this);
 
 		rootEl =
-		dragEl =
-		parentEl =
-		ghostEl =
-		nextEl =
-		cloneEl =
-		lastDownEl =
-		cloneHidden =
+			dragEl =
+			parentEl =
+			ghostEl =
+			nextEl =
+			cloneEl =
+			lastDownEl =
+			cloneHidden =
 
-		tapEvt =
-		touchEvt =
+			tapEvt =
+			touchEvt =
 
-		moved =
-		newIndex =
-		newDraggableIndex =
-		oldIndex =
-		oldDraggableIndex =
+			moved =
+			newIndex =
+			newDraggableIndex =
+			oldIndex =
+			oldDraggableIndex =
 
-		lastTarget =
-		lastDirection =
+			lastTarget =
+			lastDirection =
 
-		putSortable =
-		activeGroup =
-		Sortable.dragged =
-		Sortable.ghost =
-		Sortable.clone =
-		Sortable.active = null;
+			putSortable =
+			activeGroup =
+			Sortable.dragged =
+			Sortable.ghost =
+			Sortable.clone =
+			Sortable.active = null;
 
 		savedInputChecked.forEach(function (el) {
 			el.checked = true;
 		});
 
 		savedInputChecked.length =
-		lastDx =
-		lastDy = 0;
+			lastDx =
+			lastDy = 0;
 	},
 
 	handleEvent: function (/**Event*/evt) {
@@ -1693,7 +1694,7 @@ Sortable.prototype = /** @lends Sortable.prototype */ {
 		this.el = el = null;
 	},
 
-	_hideClone: function() {
+	_hideClone: function () {
 		if (!cloneHidden) {
 			pluginEvent('hideClone', this);
 			if (Sortable.eventCanceled) return;
@@ -1707,7 +1708,7 @@ Sortable.prototype = /** @lends Sortable.prototype */ {
 		}
 	},
 
-	_showClone: function(putSortable) {
+	_showClone: function (putSortable) {
 		if (putSortable.lastPutMode !== 'clone') {
 			this._hideClone();
 			return;
@@ -1826,8 +1827,7 @@ function _getSwapDirection(evt, target, targetRect, vertical, swapThreshold, inv
 						mouseOnAxis < targetS2 - targetLength * invertedSwapThreshold / 2
 					)
 				)
-			)
-			{
+			) {
 				// past first invert threshold, do not restrict inverted threshold to dragEl shadow
 				pastFirstInvertThresh = true;
 			}
@@ -1836,14 +1836,13 @@ function _getSwapDirection(evt, target, targetRect, vertical, swapThreshold, inv
 				// dragEl shadow (target move distance shadow)
 				if (
 					lastDirection === 1 ?
-					(
-						mouseOnAxis < targetS1 + targetMoveDistance // over dragEl shadow
-					) :
-					(
-						mouseOnAxis > targetS2 - targetMoveDistance
-					)
-				)
-				{
+						(
+							mouseOnAxis < targetS1 + targetMoveDistance // over dragEl shadow
+						) :
+						(
+							mouseOnAxis > targetS2 - targetMoveDistance
+						)
+				) {
 					return -lastDirection;
 				}
 			} else {
@@ -1867,8 +1866,7 @@ function _getSwapDirection(evt, target, targetRect, vertical, swapThreshold, inv
 		if (
 			mouseOnAxis < targetS1 + (targetLength * invertedSwapThreshold / 2) ||
 			mouseOnAxis > targetS2 - (targetLength * invertedSwapThreshold / 2)
-		)
-		{
+		) {
 			return ((mouseOnAxis > targetS1 + targetLength / 2) ? 1 : -1);
 		}
 	}
@@ -1931,7 +1929,7 @@ function _cancelNextTick(id) {
 
 // Fixed #973:
 if (documentExists) {
-	on(document, 'touchmove', function(evt) {
+	on(document, 'touchmove', function (evt) {
 		if ((Sortable.active || awaitingDragStarted) && evt.cancelable) {
 			evt.preventDefault();
 		}
@@ -1966,7 +1964,7 @@ Sortable.utils = {
  * @param  {HTMLElement} element The element
  * @return {Sortable|undefined}         The instance of Sortable
  */
-Sortable.get = function(element) {
+Sortable.get = function (element) {
 	return element[expando];
 };
 
@@ -1974,12 +1972,12 @@ Sortable.get = function(element) {
  * Mount a plugin to Sortable
  * @param  {...SortablePlugin|SortablePlugin[]} plugins       Plugins being mounted
  */
-Sortable.mount = function(...plugins) {
+Sortable.mount = function (...plugins) {
 	if (plugins[0].constructor === Array) plugins = plugins[0];
 
 	plugins.forEach((plugin) => {
 		if (!plugin.prototype || !plugin.prototype.constructor) {
-			throw `Sortable: Mounted plugin must be a constructor function, not ${ {}.toString.call(plugin) }`;
+			throw `Sortable: Mounted plugin must be a constructor function, not ${{}.toString.call(plugin)}`;
 		}
 		if (plugin.utils) Sortable.utils = { ...Sortable.utils, ...plugin.utils };
 
